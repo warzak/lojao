@@ -45,6 +45,7 @@
                             <th>Nome</th>
                             <th>Descrição</th>
                             <th>Valor</th>
+                            <th>Foto</th>
                             <th>Criado em</th>
                             <th>Ação</th>
                         </tr>
@@ -60,6 +61,7 @@
                             echo "<tr>";
                             echo "<td>".$row['id']."</td>";
                             echo "<td>".$row['nome']."</td>";      echo "<td>".$row['descricao']."</td>"; echo "<td>".$row['valor']."</td>";
+                            echo "<td>".$row['foto']."</td>";     
                             echo "<td>".$row['criadoEm']."</td>";
                             echo "<td>
                                     $btn_edit 
