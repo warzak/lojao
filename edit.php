@@ -1,8 +1,8 @@
 <?php
+include 'config/database.php';
+
 if(isset($_GET['id'])){
    $id = $_GET['id'];
-
-   include 'config/database.php';
 
    try{
       $query = "SELECT id, nome, valor, descricao FROM produtos WHERE id=?";
@@ -21,7 +21,43 @@ if(isset($_GET['id'])){
    }catch(PDOException $exception){
       die('Errouuu ' . $exception->getMessage());
    }
-}
+}//if $_GET
+
+if($_POST){
+   
+      try{
+         $query = "UPDATE produtos SET nome=:nome, valor=:valor, descricao=:descricao WHERE id =:id";
+   
+         //statement syntax
+         $stm = $con->prepare($query);
+   
+         //get data form
+         //obtendo os dados do formulário
+         $nome = htmlspecialchars($_POST['fnome']);
+         $valor = htmlspecialchars($_POST['fvalor']);
+         $descricao = htmlspecialchars($_POST['fdesc']);
+   
+         //formatar/ligar os parametros a query/instrução
+         $stm->bindParam(':nome', $nome);
+         $stm->bindParam(':valor', $valor);
+         $stm->bindParam(':descricao', $descricao);
+         $stm->bindParam(':id', $id);
+            
+         //executar instrução sql
+         //para alterar produto
+         if($stm->execute()){
+            echo "<div class='alert alert-success'>
+                  Registro Salvo!</div>";
+         }else{
+            echo "<div class='alert alert-danger'>
+                  Oops! Erro ao salvar registro!</div>";
+   
+            print_r($con->errorInfo());
+         }
+      }catch(PDOException $exception){
+         die('Errouuu ' . $exception->getMessage());
+      }
+   }
 
 ?>
 <!DOCTYPE HTML>
@@ -33,7 +69,7 @@ if(isset($_GET['id'])){
    <body>
       <div class="container">
          <div class="page-header">
-            <form class="form-horizontal" action="<?php $_SERVER['PHP_SELF'];?>" method="POST">
+            <form class="form-horizontal" action="<?php $_SERVER['PHP_SELF'].'?id='.$id;?>" method="POST">
             <fieldset>
 
             <!-- Form Name -->
